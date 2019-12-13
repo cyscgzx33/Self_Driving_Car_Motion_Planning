@@ -41,7 +41,7 @@ def inverse_scanner(num_rows, num_cols, x, y, theta, meas_phi, meas_r, rmax, alp
             # If the cell is in front of the range measurement, it is likely to be empty.
             elif r < meas_r[k]:
                 m[i, j] = 0.3
-                
+
     return m
 
 # Generates range measurements for a laser scanner based on a map, vehicle position,
@@ -53,7 +53,7 @@ def get_ranges(true_map, X, meas_phi, rmax):
     y = X[1]
     theta = X[2]
     meas_r = rmax * np.ones(meas_phi.shape)
-    
+
     # Iterate for each measurement bearing.
     for i in range(len(meas_phi)):
         # Iterate over each unit step up to and including rmax.
@@ -71,7 +71,7 @@ def get_ranges(true_map, X, meas_phi, rmax):
             elif true_map[int(round(xi)), int(round(yi))] == 1:
                 meas_r[i] = r
                 break
-                
+
     return meas_r
 
 # Simulation time initialization.
@@ -168,21 +168,21 @@ for t in range(1, len(time_steps)):
     else:
         x[0:2, t] = move
     x[2, t] = (x[2, t-1] + w[t]) % (2 * math.pi)
-    
+
     # TODO Gather the measurement range data, which we will convert to occupancy probabilities
     # using our inverse measurement model.
-    # meas_r = ...
+    meas_r = get_ranges(true_map, x[:, t], meas_phi, rmax) # TODO: confirm
     meas_rs.append(meas_r)
-    
+
     # TODO Given our range measurements and our robot location, apply our inverse scanner model
     # to get our measure probabilities of occupancy.
-    # invmod = ...
+    invmod = inverse_scanner(M, N, x[0, t], x[1, t], x[2, t], meas_phi, meas_r, rmax, alpha, beta) # TODO: confirm
     invmods.append(invmod)
-    
+
     # TODO Calculate and update the log odds of our occupancy grid, given our measured
     # occupancy probabilities from the inverse model.
     # L = ...
-    
+
     # TODO Calculate a grid of probabilities from the log odds.
     # m = ...
     ms.append(m)
