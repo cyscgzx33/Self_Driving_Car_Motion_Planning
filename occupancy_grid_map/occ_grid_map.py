@@ -130,6 +130,11 @@ for when your visualization looks correct. Good luck!
 '''
 
 # %%capture
+
+# Logit function
+def logit(p):
+    return np.log( np.divide( p, np.subtract(1, p) ) )
+
 # Intitialize figures.
 map_fig = plt.figure()
 map_ax = map_fig.add_subplot(111)
@@ -181,7 +186,7 @@ for t in range(1, len(time_steps)):
 
     # TODO Calculate and update the log odds of our occupancy grid, given our measured
     # occupancy probabilities from the inverse model.
-    # L = ...
+    L = logit(m) + L - L0 # TODO: confirm; if m := p( m^i | y_t )
 
     # TODO Calculate a grid of probabilities from the log odds.
     # m = ...
