@@ -104,11 +104,11 @@ true_map[40:50,5:25] = 1
 m = np.multiply(0.5, np.ones((M, N)))
 
 # Initialize the log odds ratio.
-L0 = np.log(np.divide(m, np.subtract(1, m)))
+L0 = np.log(np.divide(m, np.subtract(1, m))) # Note: np.divide returns element-wise division
 L = L0
 
 # Parameters for the sensor model.
-meas_phi = np.arange(-0.4, 0.4, 0.05)
+meas_phi = np.arange(-0.4, 0.4, 0.05) # create a vector with diff equal to 0.05
 rmax = 30 # Max beam range.
 alpha = 1 # Width of an obstacle (distance about measurement to fill in).
 beta = 0.05 # Angular width of a beam.
@@ -129,11 +129,21 @@ used for grading your assignment. Make sure to copy down these values and save t
 for when your visualization looks correct. Good luck!
 '''
 
-# %%capture
-
-# Logit function
+'''
+Capture is the process or means of obtaining and storing external data, particularly images or sounds, 
+for use at a later time. ... At a later time, it can be analyzed by a computer, or compared with other 
+files in a database to verify identity or to provide authorization to enter a secured system.
+'''
+%%capture
+# Intitialize figures.
+# logit function
 def logit(p):
-    return np.log( np.divide( p, np.subtract(1, p) ) )
+    return np.log( np.divide( p, np.subtract(1, p) ) ) # Note: must use the element-wise method np.divide
+
+# inv_logit function
+def inv_logit(l):
+    exp_logit = np.exp(l) # Note: must use the element-wise method np.exp(x)
+    return np.divide( exp_logit, 1 + exp_logit )
 
 # Intitialize figures.
 map_fig = plt.figure()
@@ -173,23 +183,23 @@ for t in range(1, len(time_steps)):
     else:
         x[0:2, t] = move
     x[2, t] = (x[2, t-1] + w[t]) % (2 * math.pi)
-
-    # TODO Gather the measurement range data, which we will convert to occupancy probabilities
+    
+    # TODO(done) Gather the measurement range data, which we will convert to occupancy probabilities
     # using our inverse measurement model.
-    meas_r = get_ranges(true_map, x[:, t], meas_phi, rmax) # TODO: confirm
+    meas_r = get_ranges(true_map, x[:, t], meas_phi, rmax)
     meas_rs.append(meas_r)
 
-    # TODO Given our range measurements and our robot location, apply our inverse scanner model
+    # TODO(done) Given our range measurements and our robot location, apply our inverse scanner model
     # to get our measure probabilities of occupancy.
-    invmod = inverse_scanner(M, N, x[0, t], x[1, t], x[2, t], meas_phi, meas_r, rmax, alpha, beta) # TODO: confirm
+    invmod = inverse_scanner(M, N, x[0, t], x[1, t], x[2, t], meas_phi, meas_r, rmax, alpha, beta)
     invmods.append(invmod)
 
-    # TODO Calculate and update the log odds of our occupancy grid, given our measured
+    # TODO(done) Calculate and update the log odds of our occupancy grid, given our measured
     # occupancy probabilities from the inverse model.
-    L = logit(m) + L - L0 # TODO: confirm; if m := p( m^i | y_t )
+    L = logit(invmod) + L - L0
 
-    # TODO Calculate a grid of probabilities from the log odds.
-    # m = ...
+    # TODO(done) Calculate a grid of probabilities from the log odds.
+    m = inv_logit(L)
     ms.append(m)
 
 '''
@@ -229,14 +239,14 @@ def invmod_update(i):
         invmod_ax.plot(x[1, i] + meas_rs[i][j] * math.sin(meas_phi[j] + x[2, i]), \
                        x[0, i] + meas_rs[i][j] * math.cos(meas_phi[j] + x[2, i]), "ko")
     invmod_ax.plot(x[1, i], x[0, i], 'bx')
-    
+
 def belief_update(i):
     belief_ax.clear()
     belief_ax.set_xlim(0, N)
     belief_ax.set_ylim(0, M)
     belief_ax.imshow(ms[i], cmap='gray', origin='lower', vmin=0.0, vmax=1.0)
     belief_ax.plot(x[1, max(0, i-10):i], x[0, max(0, i-10):i], 'bx-')
-    
+
 map_anim = anim.FuncAnimation(map_fig, map_update, frames=len(x[0, :]), repeat=False)
 invmod_anim = anim.FuncAnimation(invmod_fig, invmod_update, frames=len(x[0, :]), repeat=False)
 belief_anim = anim.FuncAnimation(belief_fig, belief_update, frames=len(x[0, :]), repeat=False)
