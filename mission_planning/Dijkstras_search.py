@@ -59,7 +59,7 @@ def dijkstras_search(origin_key, goal_key, graph):
             else:
                 open_queue.update( {next_vtx : dis + weight} )
                 predecessors.update( {next_vtx : vtx} )
-        closed_dict[vtx] = dis
+        closed_dict.update( {vtx : dis} )
     
     # If we get through entire priority queue without finding the goal,
     # something is wrong.
