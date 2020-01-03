@@ -130,7 +130,7 @@ for when your visualization looks correct. Good luck!
 '''
 
 '''
-Capture is the process or means of obtaining and storing external data, particularly images or sounds, 
+Note: Capture is the process or means of obtaining and storing external data, particularly images or sounds, 
 for use at a later time. ... At a later time, it can be analyzed by a computer, or compared with other 
 files in a database to verify identity or to provide authorization to enter a secured system.
 '''
@@ -209,7 +209,6 @@ If your 3rd video converges towards the true map shown in the 1st video, congrat
 Please submit the output of the box above as a .txt file to the grader for this assignment.
 '''
 
-# %%
 # Ouput for grading. Do not modify this code!
 m_f = ms[-1]
 
