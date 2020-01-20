@@ -74,7 +74,7 @@ class CollisionChecker:
 
                 # Thus, we need to compute:
                 # circle_x = point_x + circle_offset*cos(yaw)
-                # circle_y = point_y circle_offset*sin(yaw)
+                # circle_y = point_y + circle_offset*sin(yaw)
                 # for each point along the path.
                 # point_x is given by path[0][j], and point _y is given by
                 # path[1][j]. 

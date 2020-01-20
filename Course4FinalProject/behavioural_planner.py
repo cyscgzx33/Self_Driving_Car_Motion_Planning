@@ -44,7 +44,7 @@ class BehaviouralPlanner:
     # Handles state transitions and computes the goal state.
     def transition_state(self, waypoints, ego_state, closed_loop_speed):
         """Handles state transitions and computes the goal state.  
-        
+
         args:
             waypoints: current waypoints to track (global frame). 
                 length and speed in m and m/s.
@@ -198,7 +198,7 @@ class BehaviouralPlanner:
     # arc length (including closest_len) that is greater than or equal to self._lookahead.
     def get_goal_index(self, waypoints, ego_state, closest_len, closest_index):
         """Gets the goal index for the vehicle. 
-        
+
         Set to be the earliest waypoint that has accumulated arc length
         accumulated arc length (including closest_len) that is greater than or
         equal to self._lookahead.
@@ -224,10 +224,10 @@ class BehaviouralPlanner:
                     ego_open_loop_speed : open loop speed (m/s)
             closest_len: length (m) to the closest waypoint from the vehicle.
             closest_index: index of the waypoint which is closest to the vehicle.
-                i.e. waypoints[closest_index] gives the waypoint closest to the vehicle.
+                i.e. closest_index gives the waypoint closest to the vehicle.
         returns:
             wp_index: Goal index for the vehicle to reach
-                i.e. waypoints[wp_index] gives the goal waypoint
+                i.e. wp_index gives the goal waypoint index
         """
         # Find the farthest point along the path that is within the
         # lookahead distance of the ego vehicle.
@@ -246,11 +246,16 @@ class BehaviouralPlanner:
             return wp_index
 
         # Otherwise, find our next waypoint.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # while wp_index < len(waypoints) - 1:
-        #   arc_length += ...
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # But... did I understand author's intension in a proper way? 
+        # Calculate the new arc_length using triangle rule, or simply addition?
+        while wp_index < len(waypoints) - 1 and arc_length <= self._lookahead:
+            x_next = waypoints[wp_index + 1][0]
+            y_next = waypoints[wp_index + 1][1]
+            x_curr = waypoints[wp_index][0]
+            y_curr = waypoints[wp_index][1]
+            arc_length += math.sqrt( (x_next - x_curr) ** 2 + (y_next - y_curr) ** 2 )
+            wp_index += 1
 
         return wp_index
 
@@ -263,7 +268,7 @@ class BehaviouralPlanner:
         Checks for a stop sign that is intervening the goal path. Returns a new
         goal index (the current goal index is obstructed by a stop line), and a
         boolean flag indicating if a stop sign obstruction was found.
-        
+
         args:
             waypoints: current waypoints to track. (global frame)
                 length and speed in m and m/s.
@@ -330,7 +335,7 @@ class BehaviouralPlanner:
                     return goal_index, True
 
         return goal_index, False
-                
+
     # Checks to see if we need to modify our velocity profile to accomodate the
     # lead vehicle.
     def check_for_lead_vehicle(self, ego_state, lead_car_position):
@@ -433,11 +438,17 @@ def get_closest_index(waypoints, ego_state):
     """
     closest_len = float('Inf')
     closest_index = 0
-    # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-    # ------------------------------------------------------------------
-    # for i in range(len(waypoints)):
-    #   ...
-    # ------------------------------------------------------------------
+    # TODO(done)
+    len_diff = float('Inf')
+    for i in range(len(waypoints)):
+        x = waypoints[i][0]
+        y = waypoints[i][1]
+        x_ego = ego_state[0]
+        y_ego = ego_state[1]
+        len_diff = math.sqrt( (x - x_ego) ** 2 + (y - y_ego) ** 2 )
+        if len_diff < closest_len:
+            closest_len = len_diff
+            closest_index = i
 
     return closest_len, closest_index
 
