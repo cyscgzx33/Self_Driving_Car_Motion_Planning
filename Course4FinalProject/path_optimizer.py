@@ -155,7 +155,6 @@ class PathOptimizer:
         c = (9.0*p[0] - 45.0*p[1]/2.0 + 18.0*p[2] - 9.0*p[3]/2.0)/p[4]**2
         d = -(9.0*p[0]/2.0 - 27.0*p[1]/2.0 + 27.0*p[2]/2.0 - 9.0*p[3]/2.0)/p[4]**3
 
-
         # Set the s_points (list of s values along the spiral) to be from 0.0
         # to p[4] (final arc length)
         s_points = np.linspace(0.0, p[4])

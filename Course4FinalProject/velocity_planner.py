@@ -24,7 +24,7 @@ class VelocityPlanner:
     def get_open_loop_speed(self, timestep):
         if len(self._prev_trajectory) == 1:
             return self._prev_trajectory[0][2] 
-        
+
         # If simulation time step is zero, give the start of the trajectory as the
         # open loop estimate.
         if timestep < 1e-4:
@@ -35,7 +35,7 @@ class VelocityPlanner:
                                                        self._prev_trajectory[i][0:2]))
             velocity = self._prev_trajectory[i][2]
             time_delta = distance_step / velocity
-           
+
             # If time_delta exceeds the remaining time in our simulation timestep, 
             # interpolate between the velocity of the current step and the velocity
             # of the next step to estimate the open loop velocity.
@@ -75,7 +75,7 @@ class VelocityPlanner:
                                  closed_loop_speed, decelerate_to_stop, 
                                  lead_car_state, follow_lead_vehicle):
         """Computes the velocity profile for the local planner path.
-        
+
         args:
             path: Path (global frame) that the vehicle will follow.
                 Format: [x_points, y_points, t_points]
@@ -159,7 +159,7 @@ class VelocityPlanner:
     def decelerate_profile(self, path, start_speed): 
         """Computes the velocity profile for the local path to decelerate to a
         stop.
-        
+
         args:
             path: Path (global frame) that the vehicle will follow.
                 Format: [x_points, y_points, t_points]
@@ -243,7 +243,7 @@ class VelocityPlanner:
             # Generate the profile, given the computed speeds.
             for i in range(len(speeds)):
                 profile.append([path[0][i], path[1][i], speeds[i]])
-            
+
         # Otherwise, we will perform a full trapezoidal profile. The
         # brake_index will be the index of the path at which we start
         # braking, and the decel_index will be the index at which we stop

@@ -66,7 +66,7 @@ class CollisionChecker:
                 # for any potential collisions along each path with obstacles.
 
                 # The circle offsets are given by self._circle_offsets.
-                # The circle offsets need to placed at each point along the path,
+                # The circle offsets need to be placed at each point along the path,
                 # with the offset rotated by the yaw of the vehicle.
                 # Each path is of the form [[x_values], [y_values],
                 # [theta_values]], where each of x_values, y_values, and
@@ -76,7 +76,7 @@ class CollisionChecker:
                 # circle_x = point_x + circle_offset*cos(yaw)
                 # circle_y = point_y + circle_offset*sin(yaw)
                 # for each point along the path.
-                # point_x is given by path[0][j], and point _y is given by
+                # point_x is given by path[0][j], and point_y is given by
                 # path[1][j]. 
                 circle_locations = np.zeros((len(self._circle_offsets), 2))
 
