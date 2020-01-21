@@ -73,18 +73,17 @@ class CollisionChecker:
                 # theta_values are in sequential order.
 
                 # Thus, we need to compute:
-                # circle_x = point_x + circle_offset*cos(yaw)
-                # circle_y = point_y + circle_offset*sin(yaw)
+                # circle_x = point_x + circle_offset * cos(yaw)
+                # circle_y = point_y + circle_offset * sin(yaw)
                 # for each point along the path.
                 # point_x is given by path[0][j], and point_y is given by
                 # path[1][j]. 
                 circle_locations = np.zeros((len(self._circle_offsets), 2))
 
-                # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-                # --------------------------------------------------------------
-                # circle_locations[:, 0] = ... 
-                # circle_locations[:, 1] = ...
-                # --------------------------------------------------------------
+                # TODO(done)
+                # Yusen's Note: how to acess "yaw"? is it correctly done?
+                circle_locations[:, 0] = path[0][j] + self._circle_offsets * cos(path[2][j])
+                circle_locations[:, 1] = path[1][j] + self._circle_offsets * sin(path[2][j])
 
                 # Assumes each obstacle is approximated by a collection of
                 # points of the form [x, y].
@@ -100,7 +99,6 @@ class CollisionChecker:
                                                   self._circle_radii)
                     collision_free = collision_free and \
                                      not np.any(collision_dists < 0)
-
                     if not collision_free:
                         break
                 if not collision_free:
@@ -162,10 +160,13 @@ class CollisionChecker:
                 # The centerline goal is given by goal_state.
                 # The exact choice of objective function is up to you.
                 # A lower score implies a more suitable path.
-                # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-                # --------------------------------------------------------------
-                # score = ...
-                # --------------------------------------------------------------
+                # TODO(done)
+                # Yusen's Note: is it proper to compare the last point of the path with the goal point?
+                x_goal = goal_state[0]
+                y_goal = goal_state[1]
+                x_last = paths[i][0][-1]
+                y_last = paths[i][1][-1]
+                score = sqrt( (x_goal - x_last) ** 2 + (y_goal - y_last) ** 2 )
 
                 # Compute the "proximity to other colliding paths" score and
                 # add it to the "distance from centerline" score.
@@ -175,17 +176,17 @@ class CollisionChecker:
                         continue
                     else:
                         if not collision_check_array[j]:
-                            # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-                            # --------------------------------------------------
-                            # score += self._weight * ...
-                            # --------------------------------------------------
+                            # TODO(done)
+                            # Yusen's Note: is it proper to use 1/(x^2 + y^2) this type cost? is it implementted correctly?
+                            score += self._weight * 1 / sqrt( np.linalg.norm(paths[i][0] - paths[j][0]) ** 2 + \
+                                     np.linalg.norm(paths[i][1] - paths[j][1]) ** 2 )
 
                             pass
 
             # Handle the case of colliding paths.
             else:
                 score = float('Inf')
-                
+
             # Set the best index to be the path index with the lowest score
             if score < best_score:
                 best_score = score
