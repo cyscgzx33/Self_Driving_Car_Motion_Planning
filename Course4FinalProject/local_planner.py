@@ -12,7 +12,7 @@ import copy
 import path_optimizer
 import collision_checker
 import velocity_planner
-from math import sin, cos, pi, sqrt
+from math import sin, cos, pi, sqrt, atan2
 
 class LocalPlanner:
     def __init__(self, num_paths, path_offset, circle_offsets, circle_radii, 
@@ -42,7 +42,7 @@ class LocalPlanner:
     # perpendicular to the goal yaw of the ego vehicle.
     def get_goal_state_set(self, goal_index, goal_state, waypoints, ego_state):
         """Gets the goal states given a goal position.
-        
+
         Gets the goal states given a goal position. The states 
 
         args:
@@ -85,15 +85,15 @@ class LocalPlanner:
         # the previous index instead.
         # To do this, compute the delta_x and delta_y values between
         # consecutive waypoints, then use the np.arctan2() function.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # if ...
-        # delta_x = ...
-        # delta_y = ...
-        # else: ...
-        # ...
-        # heading = ...
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # Yusen's Note: check the correctness of heading calculation
+        if goal_index == len(waypoints) - 1:
+            delta_x = waypoints[goal_index][0] - waypoints[goal_index-1][0]
+            delta_y = waypoints[goal_index][1] - waypoints[goal_index-1][1]
+        else: 
+            delta_x = waypoints[goal_index+1][0] - waypoints[goal_index][0]
+            delta_y = waypoints[goal_index+1][1] - waypoints[goal_index][1]
+        heading = atan2(delta_y, delta_x)
 
         # Compute the center goal state in the local frame using 
         # the ego state. The following code will transform the input
@@ -103,29 +103,37 @@ class LocalPlanner:
 
         # Translate so the ego state is at the origin in the new frame.
         # This is done by subtracting the ego_state from the goal_state_local.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # goal_state_local[0] -= ... 
-        # goal_state_local[1] -= ... 
-        # ------------------------------------------------------------------
+        # TODO(done)
+        goal_state_local[0] -= ego_state[0]
+        goal_state_local[1] -= ego_state[1]
 
         # Rotate such that the ego state has zero heading in the new frame.
         # Recall that the general rotation matrix is [cos(theta) -sin(theta)
         #                                             sin(theta)  cos(theta)]
         # and that we are rotating by -ego_state[2] to ensure the ego vehicle's
         # current yaw corresponds to theta = 0 in the new local frame.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # goal_x = ...
-        # goal_y = ...
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # Yusen's Note: double check the correctness of math
+        # obtain cos(theta) and sin(theta) firstly
+        ct = cos(-ego_state[2])
+        st = sin(-ego_state[2])
+        # construct homogeneous rotation matrix and pre-transformed goal vector
+        Rot = np.array( [ [ct, -st, 0],
+                          [st, ct, 0],
+                          [0, 0, 1] ] )
+        goal_v = np.array([ [goal_state_local[0]],
+                            [goal_state_local[1]],
+                            [1] ])
+        # get transformed homogenous goal vector
+        trans_goal_v = Rot @ np.array
+        goal_x = trans_goal_v[0]
+        goal_y = trans_goal_v[1]
 
         # Compute the goal yaw in the local frame by subtracting off the 
         # current ego yaw from the heading variable.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # goal_t = ...
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # Yusen's Note: double check the physical meaning of each variable
+        goal_t = heading - ego_state[2]
 
         # Velocity is preserved after the transformation.
         goal_v = goal_state[2]
@@ -149,17 +157,15 @@ class LocalPlanner:
             # Compute the projection of the lateral offset along the x
             # and y axis. To do this, multiply the offset by cos(goal_theta + pi/2)
             # and sin(goal_theta + pi/2), respectively.
-            # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-            # ------------------------------------------------------------------
-            # x_offset = ...
-            # y_offset = ...
-            # ------------------------------------------------------------------
+            # TODO(done)
+            x_offset = offset * cos(goal_t + pi / 2)
+            y_offset = offset * sin(goal_t + pi / 2)
 
             goal_state_set.append([goal_x + x_offset, 
                                    goal_y + y_offset, 
                                    goal_t, 
                                    goal_v])
-           
+ 
         return goal_state_set  
               
     # Plans the path set using polynomial spiral optimization to
