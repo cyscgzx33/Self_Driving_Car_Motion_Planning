@@ -72,20 +72,18 @@ class PathOptimizer:
         # As a result, their curvature needs to lie within [-0.5, 0.5].
         # The third variable is the arc length, it has no upper limit, and it
         # has a lower limit of the straight line arc length.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # bounds = ...
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # Yusen's Note: double check how to express inf here
+        bounds = [ (-0.5, 0.5), (-0.5, 0.5), (sf_0, np.inf) ]
 
         # Here we will call scipy.optimize.minimize to optimize our spiral.
         # The objective and gradient are given to you by self.objective, and
         # self.objective_grad. The bounds are computed above, and the inital
         # variables for the optimizer are set by p0. You should use the L-BFGS-B
         # optimization methods.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # res = scipy.optimize.minimize(...)
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # Yusen's Note: double check the completeness of the args
+        res = scipy.optimize.minimize(self.objective, p0, method='L-BFGS-B', jac=self.objective_grad)
 
         spiral = self.sample_spiral(res.x)
         return spiral
@@ -110,15 +108,13 @@ class PathOptimizer:
     #         c - the third term of kappa(s).
     #         d - the fourth term of kappa(s).
     def thetaf(self, a, b, c, d, s):
-        pass
-
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # # Remember that a, b, c, d and s are lists
-        # ...
-        # thetas = ...
-        # return thetas
-        # ------------------------------------------------------------------
+        # pass
+        # TODO(done)
+        # Yusen's Note: confirm if we have comment pass
+        # Remember that a, b, c, d and s are lists
+        thetas = a + np.multiply(b, s) + np.multiarray( c, np.power(s, 2) ) + \
+                     np.multiply( d, np.power(s, 3) )
+        return thetas
 
     ######################################################
     ######################################################

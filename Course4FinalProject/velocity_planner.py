@@ -401,7 +401,7 @@ class VelocityPlanner:
     def nominal_profile(self, path, start_speed, desired_speed):
         """Computes the velocity profile for the local planner path in a normal
         speed tracking case.
-        
+
         args:
             path: Path (global frame) that the vehicle will follow.
                 Format: [x_points, y_points, t_points]
