@@ -82,8 +82,9 @@ class CollisionChecker:
 
                 # TODO(done)
                 # Yusen's Note: how to acess "yaw"? is it correctly done?
-                circle_locations[:, 0] = path[0][j] + self._circle_offsets * cos(path[2][j])
-                circle_locations[:, 1] = path[1][j] + self._circle_offsets * sin(path[2][j])
+                # ! [Important Note] have to convert self._circle_offsets to np.array
+                circle_locations[:, 0] = path[0][j] + np.array(self._circle_offsets) * cos(path[2][j])
+                circle_locations[:, 1] = path[1][j] + np.array(self._circle_offsets) * sin(path[2][j])
 
                 # Assumes each obstacle is approximated by a collection of
                 # points of the form [x, y].

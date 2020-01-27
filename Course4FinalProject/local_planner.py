@@ -125,9 +125,11 @@ class LocalPlanner:
                             [goal_state_local[1]],
                             [1] ])
         # get transformed homogenous goal vector
+        # ! [Important Note] trans_goal_v is a 2D array here,
+        #                    make sure the sizes of goal_x & goal_y are correct
         trans_goal_v = Rot @ goal_v
-        goal_x = trans_goal_v[0]
-        goal_y = trans_goal_v[1]
+        goal_x = trans_goal_v[0][0]
+        goal_y = trans_goal_v[1][0]
 
         # Compute the goal yaw in the local frame by subtracting off the 
         # current ego yaw from the heading variable.
@@ -165,7 +167,7 @@ class LocalPlanner:
                                    goal_y + y_offset, 
                                    goal_t, 
                                    goal_v])
- 
+
         return goal_state_set  
               
     # Plans the path set using polynomial spiral optimization to

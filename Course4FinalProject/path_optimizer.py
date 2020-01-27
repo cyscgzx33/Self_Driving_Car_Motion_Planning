@@ -112,7 +112,7 @@ class PathOptimizer:
         # TODO(done)
         # Yusen's Note: confirm if we have comment pass
         # Remember that a, b, c, d and s are lists
-        thetas = a + np.multiply(b, s) + np.multiarray( c, np.power(s, 2) ) + \
+        thetas = a + np.multiply(b, s) + np.multiply( c, np.power(s, 2) ) + \
                      np.multiply( d, np.power(s, 3) )
         return thetas
 
