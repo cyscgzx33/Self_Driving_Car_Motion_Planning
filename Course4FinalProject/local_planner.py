@@ -125,7 +125,7 @@ class LocalPlanner:
                             [goal_state_local[1]],
                             [1] ])
         # get transformed homogenous goal vector
-        trans_goal_v = Rot @ np.array
+        trans_goal_v = Rot @ goal_v
         goal_x = trans_goal_v[0]
         goal_y = trans_goal_v[1]
 
