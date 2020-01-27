@@ -163,14 +163,14 @@ class PathOptimizer:
         # You will find the scipy.integrate.cumtrapz() function useful.
         # Try to vectorize the code using numpy functions for speed if you can.
 
-        # Try to vectorize the code using numpy functions for speed if you can.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
-        # ------------------------------------------------------------------
-        # t_points = ...
-        # x_points = ...
-        # y_points = ...
-        # return [x_points, y_points, t_points]
-        # ------------------------------------------------------------------
+        # TODO(done)
+        # Yusen's note: check the correctness of integral of x & y (ep. initial values)
+        t_points = self.thetaf(a, b, c, d, s_points)
+
+        # Integrate for x & y
+        x_points = scipy.integrate.cumtrapz(np.cos(t_points), s_points, initial=0)
+        y_points = scipy.integrate.cumtrapz(np.sin(t_points), s_points, initial=0)
+        return [x_points, y_points, t_points]
 
     ######################################################
     ######################################################
