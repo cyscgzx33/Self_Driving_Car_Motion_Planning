@@ -86,6 +86,11 @@ class CollisionChecker:
                 circle_locations[:, 0] = path[0][j] + np.array(self._circle_offsets) * cos(path[2][j])
                 circle_locations[:, 1] = path[1][j] + np.array(self._circle_offsets) * sin(path[2][j])
 
+                # print(path[0][j])
+                # print(circle_locations)
+                # print(self._circle_offsets)
+                # print(path[2][j])
+
                 # Assumes each obstacle is approximated by a collection of
                 # points of the form [x, y].
                 # Here, we will iterate through the obstacle points, and check
@@ -105,8 +110,12 @@ class CollisionChecker:
                 if not collision_free:
                     break
 
-            collision_check_array[i] = collision_free
+            # if (not collision_free):
+                # print("WOWOWOWOWOWOWOWOWO!!!!!!!!!!!!")
 
+            collision_check_array[i] = collision_free
+        print("------------------------")
+        print(collision_check_array)
         return collision_check_array
 
     ######################################################
@@ -169,6 +178,8 @@ class CollisionChecker:
                 y_last = paths[i][1][-1]
                 score = sqrt( (x_goal - x_last) ** 2 + (y_goal - y_last) ** 2 )
 
+                # print("i = " , i, ": score(before) = ", score)
+
                 # Compute the "proximity to other colliding paths" score and
                 # add it to the "distance from centerline" score.
                 # The exact choice of objective function is up to you.
@@ -179,11 +190,10 @@ class CollisionChecker:
                         if not collision_check_array[j]:
                             # TODO(done)
                             # Yusen's Note: is it proper to use 1/(x^2 + y^2) this type cost? is it implementted correctly?
-                            score += self._weight * 1 / sqrt( np.linalg.norm(paths[i][0] - paths[j][0]) ** 2 + \
+                            print("found a collision-possible path")
+                            score += - self._weight * sqrt( np.linalg.norm(paths[i][0] - paths[j][0]) ** 2 + \
                                      np.linalg.norm(paths[i][1] - paths[j][1]) ** 2 )
-
-                            pass
-
+                # print(": score(after) = ", score)
             # Handle the case of colliding paths.
             else:
                 score = float('Inf')
@@ -192,5 +202,6 @@ class CollisionChecker:
             if score < best_score:
                 best_score = score
                 best_index = i
-
+            # print("best_index = ", best_index, ", best_score = ", best_score)
+            # print("----------------------------------")
         return best_index

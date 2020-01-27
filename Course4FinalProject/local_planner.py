@@ -168,8 +168,12 @@ class LocalPlanner:
                                    goal_t, 
                                    goal_v])
 
-        return goal_state_set  
-              
+        print("=====================")
+        print(goal_state)
+        print(goal_state_set)
+
+        return goal_state_set
+  
     # Plans the path set using polynomial spiral optimization to
     # each of the goal states.
     def plan_paths(self, goal_state_set):
