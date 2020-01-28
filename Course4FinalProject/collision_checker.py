@@ -180,8 +180,9 @@ class CollisionChecker:
                             # TODO(done)
                             # Yusen's Note: is it proper to use 1/(x^2 + y^2) this type cost? is it implementted correctly?
                             print("found a collision-possible path")
-                            score += - self._weight * sqrt( np.linalg.norm(paths[i][0] - paths[j][0]) ** 2 + \
-                                     np.linalg.norm(paths[i][1] - paths[j][1]) ** 2 )
+                            diff = self._weight * sqrt( np.linalg.norm(np.array(paths[i][0]) - np.array(paths[j][0])) ** 2 + \
+                                   np.linalg.norm(np.array(paths[i][1]) - np.array(paths[j][1])) ** 2 )
+                            score += -diff
 
             # Handle the case of colliding paths.
             else:

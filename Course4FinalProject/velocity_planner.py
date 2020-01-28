@@ -523,5 +523,8 @@ def calc_final_speed(v_i, a, d):
     """
 
     # TODO(done)
-    v_f = sqrt(v_i ** 2 + 2 * a * d)
-    return v_f
+    diff = v_i ** 2 + 2 * a * d
+    if diff > 0.0:
+        return sqrt(diff)
+    else:
+        return 0.0
