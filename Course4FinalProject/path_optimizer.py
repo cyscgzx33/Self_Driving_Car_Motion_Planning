@@ -112,8 +112,11 @@ class PathOptimizer:
         # TODO(done)
         # Yusen's Note: confirm if we have comment pass
         # Remember that a, b, c, d and s are lists
-        thetas = a + np.multiply(b, s) + np.multiply( c, np.power(s, 2) ) + \
-                     np.multiply( d, np.power(s, 3) )
+        thetas = np.multiply( a, s ) + \
+                 np.multiply( b/2, np.power(s, 2) ) + \
+                 np.multiply( c/3, np.power(s, 3) ) + \
+                 np.multiply( d/4, np.power(s, 4) )
+
         return thetas
 
     ######################################################
@@ -168,8 +171,8 @@ class PathOptimizer:
         t_points = self.thetaf(a, b, c, d, s_points)
 
         # Integrate for x & y
-        x_points = scipy.integrate.cumtrapz(np.cos(t_points), s_points, initial=0)
-        y_points = scipy.integrate.cumtrapz(np.sin(t_points), s_points, initial=0)
+        x_points = scipy.integrate.cumtrapz(np.cos(t_points), s_points, initial=0.0)
+        y_points = scipy.integrate.cumtrapz(np.sin(t_points), s_points, initial=0.0)
         return [x_points, y_points, t_points]
 
     ######################################################

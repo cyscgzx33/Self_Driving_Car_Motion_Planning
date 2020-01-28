@@ -168,10 +168,6 @@ class LocalPlanner:
                                    goal_t, 
                                    goal_v])
 
-        print("=====================")
-        print(goal_state)
-        print(goal_state_set)
-
         return goal_state_set
   
     # Plans the path set using polynomial spiral optimization to
@@ -216,6 +212,7 @@ class LocalPlanner:
             path = self._path_optimizer.optimize_spiral(goal_state[0], 
                                                         goal_state[1], 
                                                         goal_state[2])
+
             if np.linalg.norm([path[0][-1] - goal_state[0], 
                                path[1][-1] - goal_state[1], 
                                path[2][-1] - goal_state[2]]) > 0.1:
@@ -227,7 +224,7 @@ class LocalPlanner:
         return paths, path_validity
 
 def transform_paths(paths, ego_state):
-    """ Converts the to the global coordinate frame.
+    """ Converts to the global coordinate frame.
 
     Converts the paths from the local (vehicle) coordinate frame to the
     global coordinate frame.
@@ -271,5 +268,6 @@ def transform_paths(paths, ego_state):
             t_transformed.append(path[2][i] + ego_state[2])
 
         transformed_paths.append([x_transformed, y_transformed, t_transformed])
+
 
     return transformed_paths

@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 po = path_optimizer.PathOptimizer()
 
-path = po.optimize_spiral([9.185], [-4.499], 4.261)
+# path = po.optimize_spiral(9.185, -4.499, 4.261)
+path = po.optimize_spiral(16.49, -3.01, 0.0)
 # path = po.optimize_spiral(0.0, 0.0, 10.22874134679308) # NAN result
 
 for x,y,t in np.stack(arrays=path, axis=1):
