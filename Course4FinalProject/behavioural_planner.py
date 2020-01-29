@@ -158,6 +158,8 @@ class BehaviouralPlanner:
             # Otherwise, continue counting.
             else:
                 # TODO(done)
+                print("ego position x: ", ego_state[0])
+                print("ego position y: ", ego_state[1])
                 self._stop_count += 1
 
         else:
