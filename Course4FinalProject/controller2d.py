@@ -160,7 +160,6 @@ class Controller2D(object):
             crosstrack_error = np.linalg.norm(crosstrack_vector)
 
             # set deadband to reduce oscillations
-            print("crosstrack error: ", crosstrack_error)
             if crosstrack_error < self.vars.cross_track_deadband:
                 crosstrack_error = 0.0
 

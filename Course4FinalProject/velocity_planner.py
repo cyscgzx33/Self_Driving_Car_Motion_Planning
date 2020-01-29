@@ -485,7 +485,7 @@ class VelocityPlanner:
 def calc_distance(v_i, v_f, a):
     """Computes the distance given an initial and final speed, with a constant
     acceleration.
-    
+
     args:
         v_i: initial speed (m/s)
         v_f: final speed (m/s)

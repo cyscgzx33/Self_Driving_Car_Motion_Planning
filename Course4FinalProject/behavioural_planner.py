@@ -114,8 +114,9 @@ class BehaviouralPlanner:
             # the deceleration state.
             # TODO(done)
             if stop_sign_found:
-              self._goal_state[2] = 0.0 # Yusen's Note: is it correct to only zero speed but not touching position?
-              self._state = DECELERATE_TO_STOP
+                print("Stop Sign FOUND!!!!!!!!!!!!!!!!")
+                self._goal_state[2] = 0.0 # Yusen's Note: is it correct to only zero speed but not touching position?
+                self._state = DECELERATE_TO_STOP
 
         # In this state, check if we have reached a complete stop. Use the
         # closed loop speed to do so, to ensure we are actually at a complete
@@ -123,7 +124,7 @@ class BehaviouralPlanner:
         # state.
         elif self._state == DECELERATE_TO_STOP:
             # TODO(done)
-            if closed_loop_speed <= STAY_STOPPED:
+            if closed_loop_speed <= STOP_THRESHOLD:
                 self._state = STAY_STOPPED
 
         # In this state, check to see if we have stayed stopped for at
